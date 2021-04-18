@@ -16,15 +16,8 @@ RUN apk update && \
 RUN mkdir /app
 WORKDIR /app
 
-# realize
-# RUN go get -u github.com/oxequa/realize
-
-# RUN apk add --no-cache alpine-sdk git && \
-# お手本は↑だけどキャッシュ使いたいから↓にしたい
-RUN apk add alpine-sdk git && \
-  go get -u github.com/oxequa/realize
-EXPOSE 8080
-CMD ["realize", "start"]
+# realize入れようとしたけど上手くいかん
+# https://zenn.dev/h_sakano/articles/b38336d99f43e4e9e90b
 
 # webアプリに必要なライブラリのインストール
 RUN go get github.com/gin-gonic/gin && \
