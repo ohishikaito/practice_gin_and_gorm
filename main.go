@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 
+	"go_myapp/app/controllers"
 	"go_myapp/db"
 
 	"github.com/gin-gonic/gin"
@@ -18,17 +19,17 @@ import (
 
 func main() {
 	engine := gin.Default()
-	// bookEngine := engine.Group("/book")
-	// {
-	// 	v1 := bookEngine.Group("/v1")
-	// 	{
-	// 		v1.POST("/add", controllers.BookAdd)
-	// 		v1.GET("/list", controllers.BookList)
-	// 		v1.PUT("/update", controllers.BookUpdate)
-	// 		v1.DELETE("/delete", controllers.BookDelete)
-	// 	}
-	// }
-	// engine.Run("")
+	bookEngine := engine.Group("/book")
+	{
+		bookEngine.GET("/index", controllers.BookIndex)
+		bookEngine.POST("/create", controllers.BookCreate)
+		// bookEngine.PUT("/update", controllers.BookUpdate)
+		// bookEngine.DELETE("/delete", controllers.BookDelete)
+
+		// 独自実装！
+		// bookEngine.GET("/show", controllers.BookShow)
+	}
+	engine.Run()
 
 	// // ginの練習用コード
 	// engine := gin.Default()
