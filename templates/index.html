@@ -23,7 +23,7 @@
         <td>{{ .Name }}</td>
         <td>{{ .Email }}</td>
         <td>
-          <form method="delete" action="/delete/{{.ID}}">
+          <form method="post" action="/delete/{{.ID}}">
             <button type="submit">削除</button>
           </form>
         </td>
