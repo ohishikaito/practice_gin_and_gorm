@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 
@@ -31,13 +32,59 @@ func main() {
 	// })
 	// http.ListenAndServe(":8080", mux)
 
-	// engine := gin.Default()
-	// engine.GET("/", func(c *gin.Context) {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message": "hello world",
-	// 	})
-	// })
-	// engine.Run()
+	engine := gin.Default()
+	engine.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "hello world",
+		})
+	})
+	engine.Run()
+
+	// QiitaNoYatsu()
+	// openWebPage()
+}
+
+func sqlConnect() (database *gorm.DB) {
+	DBMS := "mysql"
+	USER := "root"
+	PASS := "root"
+	// dockerのネットワークを経由してアクセスするから、コンテナ名にしろ
+	PROTOCOL := "tcp(go_myapp_db_1)"
+	DBNAME := "go_database"
+
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
+
+	db, err := gorm.Open(DBMS, CONNECT)
+	if err != nil {
+		panic(err)
+	}
+
+	// 出力先
+	file, err := os.OpenFile("./db/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	log.SetOutput(file)
+
+	// ★ログ設定
+	db.LogMode(true)
+	db.SetLogger(log.New(file, "", 0))
+
+	return db
+}
+
+func openWebPage() {
+	router := gin.Default()
+	router.LoadHTMLGlob("templates/*.html")
+
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.HTML(200, "index.html", gin.H{})
+	})
+
+	router.Run()
+}
+
+func QiitaNoYatsu() {
 
 	// // Qiitaでやったやつら！簡単な方
 	db := sqlConnect()
@@ -88,47 +135,5 @@ func main() {
 	})
 
 	// router.Runしないと認識しないからね！
-	router.Run()
-
-	// openWebPage()
-}
-
-func sqlConnect() (database *gorm.DB) {
-	DBMS := "mysql"
-	USER := "root"
-	PASS := "root"
-	// dockerのネットワークを経由してアクセスするから、コンテナ名にしろ
-	PROTOCOL := "tcp(go_myapp_db_1)"
-	DBNAME := "go_database"
-
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
-
-	db, err := gorm.Open(DBMS, CONNECT)
-	if err != nil {
-		panic(err)
-	}
-
-	// 出力先
-	file, err := os.OpenFile("./db/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		panic(err)
-	}
-	log.SetOutput(file)
-
-	// ★ログ設定
-	db.LogMode(true)
-	db.SetLogger(log.New(file, "", 0))
-
-	return db
-}
-
-func openWebPage() {
-	router := gin.Default()
-	router.LoadHTMLGlob("templates/*.html")
-
-	router.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(200, "index.html", gin.H{})
-	})
-
 	router.Run()
 }
