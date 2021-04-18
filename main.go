@@ -33,12 +33,20 @@ func main() {
 	// http.ListenAndServe(":8080", mux)
 
 	engine := gin.Default()
+	ua := ""
+	engine.Use(func(c *gin.Context) {
+		ua = c.GetHeader("User-Agent")
+		c.Next()
+	})
 	engine.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world osso",
+			"message":    "hello world aa",
+			"User-Agent": ua,
 		})
 	})
+	engine.Static("/static", "./static")
 
+	// 下の処理はいじるな。理由は分からんけど起動しない
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "8080"
