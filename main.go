@@ -50,7 +50,7 @@ func openWebPage() {
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.GET("/test", func(ctx *gin.Context) {
-		ctx.HTML(200, "test.html", gin.H{})
+		ctx.HTML(200, "templates/test.html", gin.H{})
 	})
 
 	router.Run()
@@ -62,17 +62,17 @@ type User struct {
 	Email string
 }
 
+// // Qiitaでやったやつら！簡単な方
+// リクエストの後にdeferするとDBの接続が切れるからコメントアウトしてる〜
 func QiitaNoYatsu() {
-	// // Qiitaでやったやつら！簡単な方
 	db := db.SqlConnect()
 	db.AutoMigrate(&User{})
-	// defer db.Close()
+	defer db.Close()
 
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.GET("/", func(ctx *gin.Context) {
-		// db := db.SqlConnect()
 		var users []User
 		db.Order("created_at asc").Find(&users)
 		// defer db.Close()
@@ -83,7 +83,6 @@ func QiitaNoYatsu() {
 	})
 
 	router.POST("/create", func(ctx *gin.Context) {
-		// db := db.SqlConnect()
 		name := ctx.PostForm("name")
 		email := ctx.PostForm("email")
 		fmt.Printf("create uesr name = %s, email = %s \n", name, email)
@@ -97,7 +96,6 @@ func QiitaNoYatsu() {
 	})
 
 	router.POST("/delete/:id", func(ctx *gin.Context) {
-		// db := db.SqlConnect()
 		n := ctx.Param("id")
 		id, err := strconv.Atoi(n)
 		if err != nil {
