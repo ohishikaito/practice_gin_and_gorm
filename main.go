@@ -32,15 +32,19 @@ func main() {
 	// })
 	// http.ListenAndServe(":8080", mux)
 
-	fmt.Println("hoge")
-	fmt.Println("fuga")
 	engine := gin.Default()
 	engine.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world!!!",
+			"message": "hello world osso",
 		})
 	})
-	engine.Run()
+
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
+	engine.Run(":" + port)
+	// engine.Run(":8080")
 
 	// QiitaNoYatsu()
 	// openWebPage()
