@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"go_myapp/db"
@@ -27,29 +28,29 @@ func main() {
 	// 		v1.DELETE("/delete", controllers.BookDelete)
 	// 	}
 	// }
-	engine.Run(":3000")
+	// engine.Run("")
 
 	// // ginの練習用コード
 	// engine := gin.Default()
-	// ua := ""
-	// engine.Use(func(c *gin.Context) {
-	// 	ua = c.GetHeader("User-Agent")
-	// 	c.Next()
-	// })
-	// engine.GET("/", func(c *gin.Context) {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message":    "hello world ddddddd!",
-	// 		"User-Agent": ua,
-	// 	})
-	// })
-	// engine.Static("/static", "./static")
+	ua := ""
+	engine.Use(func(c *gin.Context) {
+		ua = c.GetHeader("User-Agent")
+		c.Next()
+	})
+	engine.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message":    "hello world ddddddd!",
+			"User-Agent": ua,
+		})
+	})
+	engine.Static("/static", "./static")
 
-	// // 下の処理はいじるな。理由は分からんけど起動しない
-	// port := os.Getenv("PORT")
-	// if len(port) == 0 {
-	// 	port = "8080"
-	// }
-	// engine.Run(":" + port)
+	// 下の処理はいじるな。理由は分からんけど起動しない
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
+	engine.Run(":" + port)
 
 	// NotUsedGin()
 	// QiitaNoYatsu()
@@ -76,8 +77,10 @@ type User struct {
 // // Qiitaでやったやつら！簡単な方
 // リクエストの後にdeferするとDBの接続が切れるからコメントアウトしてる〜
 func QiitaNoYatsu() {
-	db := db.SqlConnect()
-	db.AutoMigrate(&User{})
+	db, err := db.SqlConnect()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer db.Close()
 
 	router := gin.Default()
