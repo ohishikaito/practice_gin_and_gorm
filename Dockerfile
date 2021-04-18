@@ -24,5 +24,6 @@ RUN go get github.com/gin-gonic/gin && \
   # ginのホットリロード
   go get github.com/codegangsta/gin && \
   go get github.com/go-sql-driver/mysql && \
-  go get github.com/jinzhu/gorm && \
-  go get go.uber.org/zap
+  go get github.com/jinzhu/gorm
+# zapが読み込めませーん
+# go get go.uber.org/zap

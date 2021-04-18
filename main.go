@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 
-	"go_myapp/app/controllers"
 	"go_myapp/db"
 
 	"github.com/gin-gonic/gin"
@@ -18,28 +16,40 @@ import (
 // 別パッケージのファイルが読み込めん。どっかーが悪い？
 
 func main() {
-	controllers.Sample()
-
 	engine := gin.Default()
-	ua := ""
-	engine.Use(func(c *gin.Context) {
-		ua = c.GetHeader("User-Agent")
-		c.Next()
-	})
-	engine.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message":    "hello world !!?????????!!",
-			"User-Agent": ua,
-		})
-	})
-	engine.Static("/static", "./static")
+	// bookEngine := engine.Group("/book")
+	// {
+	// 	v1 := bookEngine.Group("/v1")
+	// 	{
+	// 		v1.POST("/add", controllers.BookAdd)
+	// 		v1.GET("/list", controllers.BookList)
+	// 		v1.PUT("/update", controllers.BookUpdate)
+	// 		v1.DELETE("/delete", controllers.BookDelete)
+	// 	}
+	// }
+	engine.Run(":3000")
 
-	// 下の処理はいじるな。理由は分からんけど起動しない
-	port := os.Getenv("PORT")
-	if len(port) == 0 {
-		port = "8080"
-	}
-	engine.Run(":" + port)
+	// // ginの練習用コード
+	// engine := gin.Default()
+	// ua := ""
+	// engine.Use(func(c *gin.Context) {
+	// 	ua = c.GetHeader("User-Agent")
+	// 	c.Next()
+	// })
+	// engine.GET("/", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"message":    "hello world ddddddd!",
+	// 		"User-Agent": ua,
+	// 	})
+	// })
+	// engine.Static("/static", "./static")
+
+	// // 下の処理はいじるな。理由は分からんけど起動しない
+	// port := os.Getenv("PORT")
+	// if len(port) == 0 {
+	// 	port = "8080"
+	// }
+	// engine.Run(":" + port)
 
 	// NotUsedGin()
 	// QiitaNoYatsu()
