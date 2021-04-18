@@ -46,7 +46,7 @@ func SqlConnect() (database *gorm.DB, err error) {
 	// 出力先
 	file, err := os.OpenFile("./db/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	log.SetOutput(file)
 
