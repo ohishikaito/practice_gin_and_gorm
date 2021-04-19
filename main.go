@@ -1,36 +1,35 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
-	"strconv"
-
-	"go_myapp/app/controllers"
-	"go_myapp/db"
-	"go_myapp/infrastructure/database"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 )
-
-func init() {
-	database.Migrate()
-}
 
 func main() {
 	engine := gin.Default()
+	// userEngine := engine.Group("/user")
+	// {
+	// 	userEngine.GET("/index", controllers.UserIndex)
+	// 	// userEngine.POST("/create", UserCreate)
+	// 	// userEngine.PUT("/update", UserUpdate)
+	// 	// userEngine.DELETE("/delete", UserDelete)
+
+	// 	// // 独自実装！
+	// 	// userEngine.GET("/show", BookShow)
+	// }
+
 	bookEngine := engine.Group("/book")
 	{
-		bookEngine.GET("/index", controllers.BookIndex)
-		bookEngine.POST("/create", controllers.BookCreate)
-		// bookEngine.PUT("/update", controllers.BookUpdate)
-		// bookEngine.DELETE("/delete", controllers.BookDelete)
+		bookEngine.GET("/index", controller.BookIndex)
+		// bookEngine.POST("/create", controller.BookCreate)
+		// bookEngine.PUT("/update", controller.BookUpdate)
+		// bookEngine.DELETE("/delete", controller.BookDelete)
 
 		// 独自実装！
-		// bookEngine.GET("/show", controllers.BookShow)
+		// bookEngine.GET("/show", controller.BookShow)
 	}
 	engine.Run()
 
@@ -47,7 +46,7 @@ func main() {
 			"User-Agent": ua,
 		})
 	})
-	engine.Static("/static", "./static")
+	// engine.Static("/static", "./static")
 
 	// 下の処理はいじるな。理由は分からんけど起動しない
 	port := os.Getenv("PORT")
@@ -61,87 +60,87 @@ func main() {
 	// openWebPage()
 }
 
-func openWebPage() {
-	router := gin.Default()
-	router.LoadHTMLGlob("templates/*.html")
+// func openWebPage() {
+// 	router := gin.Default()
+// 	router.LoadHTMLGlob("templates/*.html")
 
-	router.GET("/test", func(ctx *gin.Context) {
-		ctx.HTML(200, "templates/test.html", gin.H{})
-	})
+// 	router.GET("/test", func(ctx *gin.Context) {
+// 		ctx.HTML(200, "templates/test.html", gin.H{})
+// 	})
 
-	router.Run()
-}
+// 	router.Run()
+// }
 
-type User struct {
-	gorm.Model
-	Name  string
-	Email string
-}
+// type User struct {
+// 	gorm.Model
+// 	Name  string
+// 	Email string
+// }
 
-// // Qiitaでやったやつら！簡単な方
-// リクエストの後にdeferするとDBの接続が切れるからコメントアウトしてる〜
-func QiitaNoYatsu() {
-	db, err := db.SqlConnect()
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
+// // // Qiitaでやったやつら！簡単な方
+// // リクエストの後にdeferするとDBの接続が切れるからコメントアウトしてる〜
+// func QiitaNoYatsu() {
+// 	db, err := db.SqlConnect()
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// 	defer db.Close()
 
-	router := gin.Default()
-	router.LoadHTMLGlob("templates/*.html")
+// 	router := gin.Default()
+// 	router.LoadHTMLGlob("templates/*.html")
 
-	router.GET("/", func(ctx *gin.Context) {
-		var users []User
-		db.Order("created_at asc").Find(&users)
-		// defer db.Close()
+// 	router.GET("/", func(ctx *gin.Context) {
+// 		var users []User
+// 		db.Order("created_at asc").Find(&users)
+// 		// defer db.Close()
 
-		ctx.HTML(200, "index.html", gin.H{
-			"users": users,
-		})
-	})
+// 		ctx.HTML(200, "index.html", gin.H{
+// 			"users": users,
+// 		})
+// 	})
 
-	router.POST("/create", func(ctx *gin.Context) {
-		name := ctx.PostForm("name")
-		email := ctx.PostForm("email")
-		fmt.Printf("create uesr name = %s, email = %s \n", name, email)
-		db.Create(&User{
-			Name:  name,
-			Email: email,
-		})
-		// defer db.Close()
+// 	router.POST("/create", func(ctx *gin.Context) {
+// 		name := ctx.PostForm("name")
+// 		email := ctx.PostForm("email")
+// 		fmt.Printf("create uesr name = %s, email = %s \n", name, email)
+// 		db.Create(&User{
+// 			Name:  name,
+// 			Email: email,
+// 		})
+// 		// defer db.Close()
 
-		ctx.Redirect(302, "/")
-	})
+// 		ctx.Redirect(302, "/")
+// 	})
 
-	router.POST("/delete/:id", func(ctx *gin.Context) {
-		n := ctx.Param("id")
-		id, err := strconv.Atoi(n)
-		if err != nil {
-			return
-		}
-		var user User
-		db.First(&user, id)
-		db.Delete(&user)
-		// defer db.Close()
+// 	router.POST("/delete/:id", func(ctx *gin.Context) {
+// 		n := ctx.Param("id")
+// 		id, err := strconv.Atoi(n)
+// 		if err != nil {
+// 			return
+// 		}
+// 		var user User
+// 		db.First(&user, id)
+// 		db.Delete(&user)
+// 		// defer db.Close()
 
-		ctx.Redirect(302, "/")
-	})
+// 		ctx.Redirect(302, "/")
+// 	})
 
-	// router.Runしないと認識しないからね！
-	router.Run()
-}
+// 	// router.Runしないと認識しないからね！
+// 	router.Run()
+// }
 
-func NotUsedGin() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, q *http.Request) {
-		message := map[string]string{
-			"message": "hello world",
-		}
-		jsonMessage, err := json.Marshal(message)
-		if err != nil {
-			panic(err.Error())
-		}
-		w.Write(jsonMessage)
-	})
-	http.ListenAndServe(":8080", mux)
-}
+// func NotUsedGin() {
+// 	mux := http.NewServeMux()
+// 	mux.HandleFunc("/", func(w http.ResponseWriter, q *http.Request) {
+// 		message := map[string]string{
+// 			"message": "hello world",
+// 		}
+// 		jsonMessage, err := json.Marshal(message)
+// 		if err != nil {
+// 			panic(err.Error())
+// 		}
+// 		w.Write(jsonMessage)
+// 	})
+// 	http.ListenAndServe(":8080", mux)
+// }
