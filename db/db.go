@@ -1,32 +1,12 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"os"
-
-	"go_myapp/app/models"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
-
-func init() {
-	migrate()
-}
-
-func migrate() {
-	fmt.Println("------------ migrate database... ------------")
-	db, err := SqlConnect()
-	if err != nil {
-		panic(err.Error())
-	}
-	// start migration
-	fmt.Println("migration...")
-	db.AutoMigrate(&models.Book{})
-	// end
-	fmt.Println("------------ finish migrate! ------------")
-}
 
 func SqlConnect() (database *gorm.DB, err error) {
 	DBMS := "mysql"

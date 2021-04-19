@@ -9,13 +9,16 @@ import (
 
 	"go_myapp/app/controllers"
 	"go_myapp/db"
+	"go_myapp/infrastructure/database"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
-// 別パッケージのファイルが読み込めん。どっかーが悪い？
+func init() {
+	database.Migrate()
+}
 
 func main() {
 	engine := gin.Default()

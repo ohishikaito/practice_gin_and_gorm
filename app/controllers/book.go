@@ -2,23 +2,27 @@ package controllers
 
 import (
 	"go_myapp/app/models"
-	"go_myapp/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func BookIndex(c *gin.Context) {
-	BookService := service.BookService{}
-	BookLists := BookService.GetBookList()
-	c.JSON(200, gin.H{
+	BookLists := models.GetBookList()
+	c.JSON(200, gin.H{x
 		"data": BookLists,
 		"unko": "tintin",
 	})
 }
 
 func BookCreate(c *gin.Context) {
-	// 反応しねえええええええ
-	// pry.Pry()
+	// form-dataにkeyを指定したら取り出せた。
+	// でもフロントからjsonで送りたいんだよなあ
+	// fmt.Println(c.PostForm("Title"), "Title")
+
+	// ついでにサービスクラスが分かりにくいからモデルに移行する
+	// 移行したらDBのmigrateがうんこになったから、なんとかしたい。サービスクラスは必要だった説w
+	// っかjsonでレスポンス受け取れねえええええ
 
 	book := models.Book{}
 	err := c.Bind(&book)
@@ -26,8 +30,13 @@ func BookCreate(c *gin.Context) {
 	// 	fmt.Println("hoge")
 	// 	return
 	// }
-	bookService := service.BookService{}
-	err = bookService.CreateBook(&book)
+
+	if err := c.ShouldBindJSON(&models.Book); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = models.CreateBook(&book)
 	// err := bookService.CreateBook(&models.Book{
 	// 	Title:   c.PostForm("title"),
 	// 	Content: c.PostForm("content"),
