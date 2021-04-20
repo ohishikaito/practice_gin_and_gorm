@@ -16,12 +16,17 @@ RUN apk update && \
 RUN mkdir /app
 WORKDIR /app
 
-# realize入れようとしたけど上手くいかん
-# https://zenn.dev/h_sakano/articles/b38336d99f43e4e9e90b
+# realize
+# https://qiita.com/rin1208/items/64a6bc469d19ad0ec981
+RUN go get -u github.com/oxequa/realize
+ENV CGO_ENABLED=0 \
+  GOOS=linux \
+  GOARCH=amd64 \
+  GO111MODULE=on
+EXPOSE 8080
+CMD ["realize", "start", "--build","--run"]
 
 # webアプリに必要なライブラリのインストール
 RUN go get github.com/gin-gonic/gin && \
-  # ginのホットリロード
-  go get github.com/codegangsta/gin && \
   go get github.com/go-sql-driver/mysql && \
   go get github.com/jinzhu/gorm

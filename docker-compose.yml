@@ -1,16 +1,14 @@
 version: '3'
 services:
   app:
-    build:
-      context: .
-    # command: /bin/sh -c "go run main.go"
-    # command: /bin/sh -c "gin --port 8080"
+    build: .
     stdin_open: true
     tty: true
     volumes:
-      - .:/app
+      - ./:/app
     ports:
       - 8080:8080
+    # 厳密には合ったほうがいいけど、今の所いらなそう
     # depends_on:
     #   - "db"
 

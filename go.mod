@@ -1,4 +1,5 @@
 module go_myapp
+
 // 使わないのを消すコマンド
 // go mod tidy -v
 
