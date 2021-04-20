@@ -2,12 +2,17 @@ package main
 
 import (
 	"go_myapp/controller"
+	"go_myapp/db"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
+
+func init() {
+	db.Migrate()
+}
 
 func main() {
 	engine := gin.Default()
