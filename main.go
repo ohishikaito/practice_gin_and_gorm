@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go_myapp/controller"
 	"net/http"
 	"os"
 
@@ -10,17 +11,6 @@ import (
 
 func main() {
 	engine := gin.Default()
-	// userEngine := engine.Group("/user")
-	// {
-	// 	userEngine.GET("/index", controllers.UserIndex)
-	// 	// userEngine.POST("/create", UserCreate)
-	// 	// userEngine.PUT("/update", UserUpdate)
-	// 	// userEngine.DELETE("/delete", UserDelete)
-
-	// 	// // 独自実装！
-	// 	// userEngine.GET("/show", BookShow)
-	// }
-
 	bookEngine := engine.Group("/book")
 	{
 		bookEngine.GET("/index", controller.BookIndex)
