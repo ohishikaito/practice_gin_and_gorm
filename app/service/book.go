@@ -13,3 +13,10 @@ func (BookService) GetBookIndex() (books []model.Book) {
 	}
 	return
 }
+
+func (BookService) SetBook(book *model.Book) error {
+	if err := db.Create(book).Error; err != nil {
+		return err
+	}
+	return nil
+}

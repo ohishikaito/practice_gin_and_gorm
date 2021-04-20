@@ -19,7 +19,7 @@ func main() {
 	bookEngine := engine.Group("/book")
 	{
 		bookEngine.GET("/index", controller.BookIndex)
-		// bookEngine.POST("/create", controller.BookCreate)
+		bookEngine.POST("/create", controller.BookCreate)
 		// bookEngine.PUT("/update", controller.BookUpdate)
 		// bookEngine.DELETE("/delete", controller.BookDelete)
 
