@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"go_myapp/service"
+	"go_myapp/app/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

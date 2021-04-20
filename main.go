@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go_myapp/controller"
+	"go_myapp/app/controller"
 	"go_myapp/db"
 	"net/http"
 	"os"
