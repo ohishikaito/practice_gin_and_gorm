@@ -12,7 +12,11 @@ import (
 var bookService service.BookService
 
 func BookIndex(c *gin.Context) {
-	books := bookService.GetBookIndex()
+	books, err := bookService.GetBookIndex()
+	if err != nil {
+		c.String(http.StatusInternalServerError, ""+err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"data": books,
 	})

@@ -6,17 +6,18 @@ import (
 
 type BookService struct{}
 
-// serviceでエラー吐いたら、コントローラーにエラー返すようにしたいなあ〜、そっちのが分かりやすそう
-func (BookService) GetBookIndex() (books []model.Book) {
+func (BookService) GetBookIndex() (books []model.Book, err error) {
 	books = make([]model.Book, 0)
 	if err := db.Find(&books).Error; err != nil {
-		panic(err.Error())
+		return nil, err
 	}
-	return
+	return books, nil
 }
 
-// クリエイトしたら、作成したインスタンスも返すように
 func (BookService) CreateBook(book *model.Book) error {
+	if err := validate.Struct(book); err != nil {
+		return err
+	}
 	if err := db.Create(book).Error; err != nil {
 		return err
 	}
@@ -32,7 +33,11 @@ func (BookService) FindBookById(bookID int) (*model.Book, error) {
 }
 
 func (BookService) UpdateBook(book *model.Book, data model.Book) error {
-	if err := db.Model(book).Updates(data).Error; err != nil {
+	// dataの値をbookに反映させるので、dataをvalidateする
+	if err := validate.Struct(data); err != nil {
+		return err
+	}
+	if err := db.Model(book).Update(data).Error; err != nil {
 		return err
 	}
 	return nil
