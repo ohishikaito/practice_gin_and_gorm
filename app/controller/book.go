@@ -35,7 +35,8 @@ func BookCreate(c *gin.Context) {
 }
 
 func BookShow(c *gin.Context) {
-	book, err := findBookById(c)
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	book, err := bookService.FindBookById(bookID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"data": err.Error(),
@@ -59,26 +60,6 @@ func BookUpdate(c *gin.Context) {
 	}
 }
 
-func BookDelete(c *gin.Context) {
-	book, err := findBookById(c)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"data": err.Error(),
-		})
-		return
-	}
-	bookService.DeleteBook(book)
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-	})
-}
-
-func findBookById(c *gin.Context) (*model.Book, error) {
-	bookID, _ := strconv.Atoi(c.Param("id"))
-	book, err := bookService.FindBookById(bookID)
-	return book, err
-}
-
 // func BookUpdate(c *gin.Context){
 //     book := model.Book{}
 //     err := c.Bind(&book)
@@ -96,3 +77,18 @@ func findBookById(c *gin.Context) (*model.Book, error) {
 //         "status": "ok",
 //     })
 // }
+
+func BookDelete(c *gin.Context) {
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	book, err := bookService.FindBookById(bookID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"data": err.Error(),
+		})
+		return
+	}
+	bookService.DeleteBook(book)
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+	})
+}
