@@ -4,33 +4,95 @@ import (
 	"go_myapp/app/model"
 	"go_myapp/app/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
+var bookService service.BookService
+
 func BookIndex(c *gin.Context) {
-	bookService := service.BookService{}
 	books := bookService.GetBookIndex()
 	c.JSON(http.StatusOK, gin.H{
-		"status": "ok",
-		"data":   books,
+		"data": books,
 	})
 }
 
 func BookCreate(c *gin.Context) {
 	book := model.Book{}
 	// BindJSONとShouldBindJSONどっちにすべきなんだろうか？
-	// if err := c.ShouldBindJSON(&book); err != nil {
 	if err := c.BindJSON(&book); err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	bookService := service.BookService{}
-	if err := bookService.SetBook(&book); err != nil {
+	if err := bookService.CreateBook(&book); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"status": "ok",
+		"data": book,
 	})
 }
+
+func BookShow(c *gin.Context) {
+	book, err := findBookById(c)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"data": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": book,
+	})
+}
+
+// updateはむずいから一旦保留
+func BookUpdate(c *gin.Context) {
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	_, err := bookService.FindBookById(bookID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"data": err.Error(),
+		})
+		return
+	}
+}
+
+func BookDelete(c *gin.Context) {
+	book, err := findBookById(c)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"data": err.Error(),
+		})
+		return
+	}
+	bookService.DeleteBook(book)
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+	})
+}
+
+func findBookById(c *gin.Context) (*model.Book, error) {
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	book, err := bookService.FindBookById(bookID)
+	return book, err
+}
+
+// func BookUpdate(c *gin.Context){
+//     book := model.Book{}
+//     err := c.Bind(&book)
+//     if err != nil{
+//         c.String(http.StatusBadRequest, "Bad request")
+//         return
+//     }
+//     bookService :=service.BookService{}
+//     err = bookService.UpdateBook(&book)
+//     if err != nil{
+//         c.String(http.StatusInternalServerError, "Server Error")
+//         return
+//     }
+//     c.JSON(http.StatusCreated, gin.H{
+//         "status": "ok",
+//     })
+// }

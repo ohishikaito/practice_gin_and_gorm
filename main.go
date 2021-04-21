@@ -20,11 +20,9 @@ func main() {
 	{
 		bookEngine.GET("/index", controller.BookIndex)
 		bookEngine.POST("/create", controller.BookCreate)
-		// bookEngine.PUT("/update", controller.BookUpdate)
-		// bookEngine.DELETE("/delete", controller.BookDelete)
-
-		// 独自実装！
-		// bookEngine.GET("/show", controller.BookShow)
+		bookEngine.GET("/:id", controller.BookShow)
+		bookEngine.PUT("/:id/update", controller.BookUpdate)
+		bookEngine.DELETE("/:id/delete", controller.BookDelete)
 	}
 	engine.Run()
 
