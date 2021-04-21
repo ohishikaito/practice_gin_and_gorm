@@ -2,16 +2,13 @@ package main
 
 import (
 	"go_myapp/app/controller"
-	"go_myapp/db"
-	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func init() {
-	db.Migrate()
+	// db.Migrate()
 }
 
 func main() {
@@ -26,27 +23,27 @@ func main() {
 	}
 	engine.Run()
 
-	// // ginの練習用コード
-	// engine := gin.Default()
-	ua := ""
-	engine.Use(func(c *gin.Context) {
-		ua = c.GetHeader("User-Agent")
-		c.Next()
-	})
-	engine.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message":    "hello world ddddddd!",
-			"User-Agent": ua,
-		})
-	})
-	// engine.Static("/static", "./static")
+	// // // ginの練習用コード
+	// // engine := gin.Default()
+	// ua := ""
+	// engine.Use(func(c *gin.Context) {
+	// 	ua = c.GetHeader("User-Agent")
+	// 	c.Next()
+	// })
+	// engine.GET("/", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"message":    "hello world ddddddd!",
+	// 		"User-Agent": ua,
+	// 	})
+	// })
+	// // engine.Static("/static", "./static")
 
-	// 下の処理はいじるな。理由は分からんけど起動しない
-	port := os.Getenv("PORT")
-	if len(port) == 0 {
-		port = "8080"
-	}
-	engine.Run(":" + port)
+	// // 下の処理はいじるな。理由は分からんけど起動しない
+	// port := os.Getenv("PORT")
+	// if len(port) == 0 {
+	// 	port = "8080"
+	// }
+	// engine.Run(":" + port)
 
 	// NotUsedGin()
 	// QiitaNoYatsu()

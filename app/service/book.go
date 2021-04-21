@@ -31,20 +31,12 @@ func (BookService) FindBookById(bookID int) (*model.Book, error) {
 	return book, nil
 }
 
-func (BookService) UpdateBook(book *model.Book) error {
-	if err := db.Update(book).Error; err != nil {
+func (BookService) UpdateBook(book *model.Book, data model.Book) error {
+	if err := db.Model(book).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil
 }
-
-// func (BookService) UpdateBook(newBook *model.Book) error {
-//     _, err := DbEngine.Id(newBook.Id).Update(newBook)
-//     if err != nil {
-//         return err
-//     }
-//     return nil
-// }
 
 func (BookService) DeleteBook(book *model.Book) error {
 	if err := db.Delete(book).Error; err != nil {
