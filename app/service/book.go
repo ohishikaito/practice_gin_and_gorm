@@ -33,10 +33,11 @@ func (BookService) FindBookById(bookID int) (*model.Book, error) {
 }
 
 func (BookService) UpdateBook(book *model.Book, data model.Book) error {
-	// dataの値をbookに反映させるので、dataをvalidateする
-	if err := validate.Struct(data); err != nil {
-		return err
-	}
+	// update時にvalidateすると、全てのカラムが必須になってしまうのでコメントアウト
+	// 値を差し替えるべきなのかなあ
+	// if err := validate.Struct(data); err != nil {
+	// 	return err
+	// }
 	if err := db.Model(book).Update(data).Error; err != nil {
 		return err
 	}

@@ -24,11 +24,7 @@ func BookIndex(c *gin.Context) {
 
 func BookCreate(c *gin.Context) {
 	book := model.Book{}
-	// BindJSONとShouldBindJSONどっちにすべきなんだろうか？
-	if err := c.BindJSON(&book); err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
+	c.BindJSON(&book)
 	if err := bookService.CreateBook(&book); err != nil {
 		c.String(http.StatusUnprocessableEntity, ""+err.Error())
 		return
@@ -58,15 +54,12 @@ func BookUpdate(c *gin.Context) {
 		return
 	}
 	data := model.Book{}
-	if err = c.BindJSON(&data); err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
+	c.BindJSON(&data)
 	if book.ID != data.ID {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	if err = bookService.UpdateBook(book, data); err != nil {
+	if err := bookService.UpdateBook(book, data); err != nil {
 		c.String(http.StatusUnprocessableEntity, ""+err.Error())
 		return
 	}
