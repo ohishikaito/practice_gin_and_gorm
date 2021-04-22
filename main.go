@@ -3,6 +3,8 @@ package main
 import (
 	"go_myapp/app/controller"
 
+	"go_myapp/middleware"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -13,6 +15,7 @@ func init() {
 
 func main() {
 	engine := gin.Default()
+	engine.Use(middleware.TestMiddleware())
 	bookEngine := engine.Group("/book")
 	{
 		bookEngine.GET("/index", controller.BookIndex)

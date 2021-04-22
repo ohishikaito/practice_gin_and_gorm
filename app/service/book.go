@@ -6,7 +6,6 @@ import (
 
 type BookService struct{}
 
-// 明日の俺へ　返り値の型だけを指定だけするように変えたぞ！
 func (BookService) GetBookIndex() ([]model.Book, error) {
 	var books []model.Book
 	if err := db.Find(&books).Error; err != nil {
