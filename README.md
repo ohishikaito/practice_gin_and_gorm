@@ -5,14 +5,8 @@ docker-compose build
 docker-compose up -d
 
 ## 単体で実行
-### gin hot reload
-docker-compose exec app gin --port 8080
 ### only gin
 docker-compose exec app go run main.go
-
-or
-
-docker run gotrading_app go run main.go
 
 # デバッカー
 `.vscode/launch.json`で
