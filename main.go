@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"go_myapp/app/controller"
+	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -17,7 +20,27 @@ type P struct {
 	Nicknames []string
 }
 
+type reqBody struct {
+	Name string `json:"name"`
+}
+
+func ViewHandler(w http.ResponseWriter, r *http.Request) {
+	var body reqBody
+	fmt.Println(r.Body)
+	fmt.Println(json.NewDecoder(r.Body))
+	fmt.Println(json.NewDecoder(r.Body).Decode(&body))
+}
+
+func NotUsedGin() {
+	app := controller.NewApp()
+	r := controller.HttpRoute(app)
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
 func main() {
+	NotUsedGin()
+
 	b := []byte(`{"name":"mikeeeeeee"}`)
 	var p P
 	if err := json.Unmarshal(b, &p); err != nil {
@@ -30,6 +53,7 @@ func main() {
 	fmt.Println(string(v))
 }
 
+// こいつらもcontroller/route.goに移動しようかなあ
 // func main() {
 // engine := gin.Default()
 // engine.Use(middleware.TestMiddleware())
