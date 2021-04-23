@@ -1,8 +1,13 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import "time"
 
 type User struct {
-	gorm.Model
-	Name string
+	// 手動でID振ったら、自動的にincrementされるのかなあ？
+	ID        uint `gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	// gorm.Model
+	email    string
+	password string
 }
