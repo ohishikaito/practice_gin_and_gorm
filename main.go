@@ -1,11 +1,9 @@
 package main
 
 import (
-	"go_myapp/app/controller"
+	"encoding/json"
+	"fmt"
 
-	"go_myapp/middleware"
-
-	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -13,24 +11,43 @@ func init() {
 	// db.Migrate()
 }
 
-func main() {
-	engine := gin.Default()
-	engine.Use(middleware.TestMiddleware())
-	bookEngine := engine.Group("/book")
-	{
-		bookEngine.GET("/index", controller.BookIndex)
-		bookEngine.POST("/create", controller.BookCreate)
-		bookEngine.GET("/:id", controller.BookShow)
-		bookEngine.PUT("/:id/update", controller.BookUpdate)
-		bookEngine.DELETE("/:id/delete", controller.BookDelete)
-	}
-	// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
-	engine.Run()
-
-	// NotUsedGin()
-	// QiitaNoYatsu()
-	// openWebPage()
+type P struct {
+	Name      string `json:"-"`
+	Age       int
+	Nicknames []string
 }
+
+func main() {
+	b := []byte(`{"name":"mikeeeeeee"}`)
+	var p P
+	if err := json.Unmarshal(b, &p); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(p)
+	fmt.Println(p.Name)
+
+	v, _ := json.Marshal(p)
+	fmt.Println(string(v))
+}
+
+// func main() {
+// engine := gin.Default()
+// engine.Use(middleware.TestMiddleware())
+// bookEngine := engine.Group("/book")
+// {
+// 	bookEngine.GET("/index", controller.BookIndex)
+// 	bookEngine.POST("/create", controller.BookCreate)
+// 	bookEngine.GET("/:id", controller.BookShow)
+// 	bookEngine.PUT("/:id/update", controller.BookUpdate)
+// 	bookEngine.DELETE("/:id/delete", controller.BookDelete)
+// }
+// engine.Run()
+
+// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
+// NotUsedGin()
+// QiitaNoYatsu()
+// openWebPage()
+// }
 
 // func openWebPage() {
 // 	router := gin.Default()
