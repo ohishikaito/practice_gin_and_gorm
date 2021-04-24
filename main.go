@@ -29,7 +29,7 @@ func Route() {
 		bookEngine.GET("/", controller.BookIndex)
 		bookEngine.POST("/", controller.BookCreate)
 		bookEngine.GET("/:id", controller.BookShow)
-		bookEngine.PUT("/:id/", controller.BookUpdate)
+		bookEngine.PUT("/:id", controller.BookUpdate)
 		bookEngine.DELETE("/:id", controller.BookDelete)
 
 		bookDetailEngine := bookEngine.Group("/:id/book_detail")
@@ -38,9 +38,9 @@ func Route() {
 			bookDetailEngine.POST("/", controller.BookDetailCreate)
 		}
 
-		commentEngine := bookEngine.Group("/:id/comments")
+		// commentEngine := bookEngine.Group("/:id/comments")
 		{
-			commentEngine.GET("/", controller.CommentIndex)
+			// commentEngine.GET("/", controller.CommentIndex)
 		}
 	}
 	engine.Run(":8080")

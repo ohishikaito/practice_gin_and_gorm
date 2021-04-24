@@ -24,32 +24,27 @@ func (BookService) CreateBook(book *model.Book) error {
 	return nil
 }
 
-func (BookService) FindBookById(bookID int) (*model.Book, error) {
+func (BookService) ShowBook(bookID int) (*model.Book, error) {
 	book := &model.Book{}
-	if err := db.Where("id = ?", bookID).Take(book).Error; err != nil {
+	if err := db.Where("id = ?", bookID).Preload("Comments").Preload("BookDetail").Take(book).Error; err != nil {
 		return nil, err
 	}
-	// bookにbookDetailをネストさせて取りたいけど、うまくいかない！ぴえんw
-	// bookDetail := &model.BookDetail{}
-	// db.Model(&book).Association("bookDetail").Find(bookDetail)
-	// fmt.Println(bookDetail.Book)
 	return book, nil
 }
 
-func (BookService) UpdateBook(book *model.Book, data model.Book) error {
-	// update時にvalidateすると、全てのカラムが必須になってしまうのでコメントアウト
-	// 値を差し替えるべきなのかなあ
-	// if err := validate.Struct(data); err != nil {
-	// 	return err
-	// }
-	if err := db.Model(book).Update(data).Error; err != nil {
-		return err
+func (BookService) UpdateBook(book *model.Book) (*model.Book, error) {
+	if err := validate.Struct(book); err != nil {
+		return nil, err
 	}
-	return nil
+	if err := db.Model(&model.Book{}).Where("id = ?", book.ID).Update(book).Error; err != nil {
+		return nil, err
+	}
+	return book, nil
 }
 
-func (BookService) DeleteBook(book *model.Book) error {
-	if err := db.Delete(book).Error; err != nil {
+func (BookService) DeleteBook(bookID int) error {
+	book := &model.Book{}
+	if err := db.Where("id = ?", bookID).Take(book).Delete(book).Error; err != nil {
 		return err
 	}
 	return nil

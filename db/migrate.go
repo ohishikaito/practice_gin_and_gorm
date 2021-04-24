@@ -23,5 +23,6 @@ func Migrate() {
 
 	db.Model(&model.Comment{}).AddForeignKey("book_id", "books(id)", "CASCADE", "CASCADE")
 	db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+	// db.Model(&model.Comment{}).RemoveForeignKey("book_id", "books(id)")
 	fmt.Println("------------ finish migrate! ----------------")
 }

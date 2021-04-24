@@ -36,7 +36,7 @@ func BookCreate(c *gin.Context) {
 
 func BookShow(c *gin.Context) {
 	bookID, _ := strconv.Atoi(c.Param("id"))
-	book, err := bookService.FindBookById(bookID)
+	book, err := bookService.ShowBook(bookID)
 	if err != nil {
 		c.String(http.StatusNotFound, ""+err.Error())
 		return
@@ -47,19 +47,16 @@ func BookShow(c *gin.Context) {
 }
 
 func BookUpdate(c *gin.Context) {
-	bookID, _ := strconv.Atoi(c.Param("id"))
-	book, err := bookService.FindBookById(bookID)
-	if err != nil {
-		c.String(http.StatusNotFound, ""+err.Error())
-		return
-	}
-	data := model.Book{}
-	c.BindJSON(&data)
-	if book.ID != data.ID {
+	paramID, _ := strconv.Atoi(c.Param("id"))
+	data := &model.Book{}
+	c.BindJSON(data)
+	// これなかったら、違うIDにリクエスト送って書き換えれる。でも必要なんですかねー？
+	if data.ID != uint(paramID) {
 		c.String(http.StatusUnprocessableEntity, "Status UnprocessableEntity")
 		return
 	}
-	if err := bookService.UpdateBook(book, data); err != nil {
+	book, err := bookService.UpdateBook(data)
+	if err != nil {
 		c.String(http.StatusUnprocessableEntity, ""+err.Error())
 		return
 	}
@@ -70,11 +67,9 @@ func BookUpdate(c *gin.Context) {
 
 func BookDelete(c *gin.Context) {
 	bookID, _ := strconv.Atoi(c.Param("id"))
-	book, err := bookService.FindBookById(bookID)
-	if err != nil {
+	if err := bookService.DeleteBook(bookID); err != nil {
 		c.String(http.StatusNotFound, ""+err.Error())
 		return
 	}
-	bookService.DeleteBook(book)
 	c.String(http.StatusOK, "deleted!")
 }
