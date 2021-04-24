@@ -22,7 +22,6 @@ func BookDetailIndex(c *gin.Context) {
 }
 
 func BookDetailCreate(c *gin.Context) {
-	// bookIDがnilのparams送ったらどうなる？
 	bookDetail := model.BookDetail{}
 	c.BindJSON(&bookDetail)
 	if err := bookDetailService.CreateBookDetail(&bookDetail); err != nil {
