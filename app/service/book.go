@@ -26,13 +26,13 @@ func (BookService) CreateBook(book *model.Book) error {
 
 func (BookService) FindBookById(bookID int) (*model.Book, error) {
 	book := &model.Book{}
-	// fmt.Println(db.Where("id = ?", bookID))
-	// fmt.Println(db.Where("id = ?", bookID).Take(book))
-	// fmt.Println(db.Where("id = ?", bookID).Take(book).Association("bookDetail"))
-	// fmt.Println(book)
-	if err := db.Where("id = ?", bookID).Take(book).Association("bookDetail").Error; err != nil {
+	if err := db.Where("id = ?", bookID).Take(book).Error; err != nil {
 		return nil, err
 	}
+	// bookにbookDetailをネストさせて取りたいけど、うまくいかない！ぴえんw
+	// bookDetail := &model.BookDetail{}
+	// db.Model(&book).Association("bookDetail").Find(bookDetail)
+	// fmt.Println(bookDetail.Book)
 	return book, nil
 }
 
