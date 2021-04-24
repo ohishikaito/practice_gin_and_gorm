@@ -56,7 +56,7 @@ func BookUpdate(c *gin.Context) {
 	data := model.Book{}
 	c.BindJSON(&data)
 	if book.ID != data.ID {
-		c.String(http.StatusBadRequest, "Bad request")
+		c.String(http.StatusUnprocessableEntity, "Status UnprocessableEntity")
 		return
 	}
 	if err := bookService.UpdateBook(book, data); err != nil {
@@ -76,5 +76,5 @@ func BookDelete(c *gin.Context) {
 		return
 	}
 	bookService.DeleteBook(book)
-	c.String(http.StatusOK, "success")
+	c.String(http.StatusOK, "deleted!")
 }

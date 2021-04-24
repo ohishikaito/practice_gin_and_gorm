@@ -2,8 +2,6 @@ package main
 
 import (
 	"go_myapp/app/controller"
-	"log"
-	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -12,32 +10,21 @@ func init() {
 	// db.Migrate()
 }
 
-func NotUsedGin() {
-	app := controller.NewApp()
-	r := controller.HttpRoute(app)
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
 // こいつらもcontroller/route.goに移動しようかなあ
 func main() {
-	// engine := gin.Default()
-	// engine.Use(middleware.TestMiddleware())
-	// bookEngine := engine.Group("/book")
-	// {
-	// 	bookEngine.GET("/index", controller.BookIndex)
-	// 	bookEngine.POST("/create", controller.BookCreate)
-	// 	bookEngine.GET("/:id", controller.BookShow)
-	// 	bookEngine.PUT("/:id/update", controller.BookUpdate)
-	// 	bookEngine.DELETE("/:id/delete", controller.BookDelete)
-	// }
-	// engine.Run()
-
+	controller.Route()
 	// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
-	NotUsedGin()
+	// NotUsedGin()
 	// QiitaNoYatsu()
 	// openWebPage()
 }
+
+// func NotUsedGin() {
+// 	app := controller.NewApp()
+// 	r := controller.HttpRoute(app)
+// 	http.Handle("/", r)
+// 	log.Fatal(http.ListenAndServe(":8080", nil))
+// }
 
 // func openWebPage() {
 // 	router := gin.Default()

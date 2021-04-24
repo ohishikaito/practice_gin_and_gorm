@@ -2,9 +2,11 @@ package controller
 
 import (
 	"encoding/json"
+	"go_myapp/middleware"
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/mux"
 )
 
@@ -38,4 +40,18 @@ func HttpRoute(app *App) *mux.Router {
 	r.HandleFunc("/users", app.UserIndexHandler).Methods("GET")
 	r.HandleFunc("/users", app.userCreateHandler).Methods("POST")
 	return r
+}
+
+func Route() {
+	engine := gin.Default()
+	engine.Use(middleware.TestMiddleware())
+	bookEngine := engine.Group("/books")
+	{
+		bookEngine.GET("/", BookIndex)
+		bookEngine.POST("/", BookCreate)
+		bookEngine.GET("/:id", BookShow)
+		bookEngine.PUT("/:id/", BookUpdate)
+		bookEngine.DELETE("/:id", BookDelete)
+	}
+	engine.Run()
 }
