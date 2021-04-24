@@ -15,9 +15,6 @@ func (app *App) JSONResponse(c *gin.Context, statusCode int, data interface{}) {
 }
 
 func (app *App) ErrorResponse(c *gin.Context, statusCode int, err error) {
-	// type body struct{
-	// 	message string
-	// }
 	c.AbortWithStatusJSON(statusCode, gin.H{
 		"Message": string(err.Error()),
 	})
