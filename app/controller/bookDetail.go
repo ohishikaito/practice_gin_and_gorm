@@ -4,6 +4,7 @@ import (
 	"go_myapp/app/model"
 	"go_myapp/app/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +23,10 @@ func BookDetailIndex(c *gin.Context) {
 }
 
 func BookDetailCreate(c *gin.Context) {
-	bookDetail := model.BookDetail{}
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	bookDetail := model.BookDetail{
+		BookID: bookID,
+	}
 	c.BindJSON(&bookDetail)
 	if err := bookDetailService.CreateBookDetail(&bookDetail); err != nil {
 		c.String(http.StatusUnprocessableEntity, ""+err.Error())

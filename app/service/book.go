@@ -26,7 +26,11 @@ func (BookService) CreateBook(book *model.Book) error {
 
 func (BookService) FindBookById(bookID int) (*model.Book, error) {
 	book := &model.Book{}
-	if err := db.Where("id = ?", bookID).Take(book).Error; err != nil {
+	// fmt.Println(db.Where("id = ?", bookID))
+	// fmt.Println(db.Where("id = ?", bookID).Take(book))
+	// fmt.Println(db.Where("id = ?", bookID).Take(book).Association("bookDetail"))
+	// fmt.Println(book)
+	if err := db.Where("id = ?", bookID).Take(book).Association("bookDetail").Error; err != nil {
 		return nil, err
 	}
 	return book, nil
