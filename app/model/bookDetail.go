@@ -6,10 +6,10 @@ import (
 
 type BookDetail struct {
 	gorm.Model
-	// BookIDがnilでもcreateできちゃうけど、commentsを作ってから。後回し！
+	// TODO: BookIDがnilでもcreateできちゃうけど、commentsを作ってから。後回し！
 	// BookID      uint   `gorm:"foreignKey"`
 	BookID int
-	Book   Book `gorm:"foreignkey:BookID"`
+	Book   Book `gorm:"foreignkey:BookID,constraint"`
 	// Book        Book   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Description string `validate:"required"`
 }

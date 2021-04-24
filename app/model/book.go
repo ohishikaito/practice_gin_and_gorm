@@ -10,5 +10,6 @@ type Book struct {
 	Title      string      `validate:"required"`
 	Content    string      `validate:"required"`
 	BookDetail *BookDetail `gorm:"foreignkey:BookID"`
+	Comments   []Comment
 	// BookDetail BookDetail `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

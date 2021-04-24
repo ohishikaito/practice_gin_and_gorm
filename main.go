@@ -14,15 +14,14 @@ func init() {
 }
 
 func main() {
-	router := Route()
-	router.Run(":8080")
+	Route()
 
 	// NotUsedGin()
 	// QiitaNoYatsu()
 	// openWebPage()
 }
 
-func Route() *gin.Engine {
+func Route() {
 	engine := gin.Default()
 	engine.Use(middleware.TestMiddleware())
 	bookEngine := engine.Group("/books")
@@ -33,13 +32,18 @@ func Route() *gin.Engine {
 		bookEngine.PUT("/:id/", controller.BookUpdate)
 		bookEngine.DELETE("/:id", controller.BookDelete)
 
-		bookDetail := bookEngine.Group("/:id/book_detail")
+		bookDetailEngine := bookEngine.Group("/:id/book_detail")
 		{
-			bookDetail.GET("/", controller.BookDetailIndex)
-			bookDetail.POST("/", controller.BookDetailCreate)
+			bookDetailEngine.GET("/", controller.BookDetailIndex)
+			bookDetailEngine.POST("/", controller.BookDetailCreate)
+		}
+
+		commentEngine := bookEngine.Group("/:id/comments")
+		{
+			commentEngine.GET("/", controller.CommentIndex)
 		}
 	}
-	return engine
+	engine.Run(":8080")
 }
 
 // func NotUsedGin() {
