@@ -17,15 +17,14 @@ func BookIndex(c *gin.Context) {
 		c.String(http.StatusInternalServerError, ""+err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": books,
-	})
+	app.JSONResponse(c, http.StatusOK, books)
 }
 
 func BookCreate(c *gin.Context) {
 	book := model.Book{}
 	c.BindJSON(&book)
 	if err := bookService.CreateBook(&book); err != nil {
+		// app.ErrorResponse(c, http.StatusNotFound, err)
 		c.String(http.StatusUnprocessableEntity, ""+err.Error())
 		return
 	}
@@ -38,12 +37,10 @@ func BookShow(c *gin.Context) {
 	bookID, _ := strconv.Atoi(c.Param("id"))
 	book, err := bookService.ShowBook(bookID)
 	if err != nil {
-		c.String(http.StatusNotFound, ""+err.Error())
+		app.ErrorResponse(c, http.StatusNotFound, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": book,
-	})
+	app.JSONResponse(c, http.StatusOK, book)
 }
 
 func BookUpdate(c *gin.Context) {

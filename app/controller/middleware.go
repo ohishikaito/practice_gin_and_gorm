@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +9,16 @@ type App struct{}
 var app *App
 
 func (app *App) JSONResponse(c *gin.Context, statusCode int, data interface{}) {
-	c.JSON(http.StatusCreated, gin.H{
+	c.JSON(statusCode, gin.H{
 		"data": data,
+	})
+}
+
+func (app *App) ErrorResponse(c *gin.Context, statusCode int, err error) {
+	// type body struct{
+	// 	message string
+	// }
+	c.AbortWithStatusJSON(statusCode, gin.H{
+		"Message": string(err.Error()),
 	})
 }

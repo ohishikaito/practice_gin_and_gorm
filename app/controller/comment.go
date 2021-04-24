@@ -14,6 +14,7 @@ func CommentCreate(c *gin.Context) {
 	comment := &model.Comment{}
 	c.BindJSON(comment)
 	if err := commentService.CreateComment(comment); err != nil {
+		// app.ErrorResponse(c, http.StatusNotFound, err)
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, err)
 		return
 	}
