@@ -1,4 +1,3 @@
-// packageをmainにしないとDBを読み込めないっていううんこ仕様
 package db
 
 import (
@@ -19,5 +18,6 @@ func Migrate() {
 	fmt.Println("migrate...")
 	db.AutoMigrate(&model.Book{})
 	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.BookDetail{})
 	fmt.Println("------------ finish migrate! ----------------")
 }

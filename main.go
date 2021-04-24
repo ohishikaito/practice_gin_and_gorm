@@ -2,21 +2,44 @@ package main
 
 import (
 	"go_myapp/app/controller"
+	"go_myapp/db"
+	"go_myapp/middleware"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func init() {
-	// db.Migrate()
+	db.Migrate()
 }
 
-// こいつらもcontroller/route.goに移動しようかなあ
 func main() {
-	controller.Route()
-	// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
+	router := Route()
+	router.Run(":8080")
+
 	// NotUsedGin()
 	// QiitaNoYatsu()
 	// openWebPage()
+}
+
+func Route() *gin.Engine {
+	engine := gin.Default()
+	engine.Use(middleware.TestMiddleware())
+	bookEngine := engine.Group("/books")
+	{
+		bookEngine.GET("/", controller.BookIndex)
+		bookEngine.POST("/", controller.BookCreate)
+		bookEngine.GET("/:id", controller.BookShow)
+		bookEngine.PUT("/:id/", controller.BookUpdate)
+		bookEngine.DELETE("/:id", controller.BookDelete)
+
+		bookDetail := bookEngine.Group("/:id/book_detail")
+		{
+			bookDetail.GET("/", controller.BookDetailIndex)
+			bookDetail.POST("/", controller.BookDetailCreate)
+		}
+	}
+	return engine
 }
 
 // func NotUsedGin() {
@@ -27,7 +50,8 @@ func main() {
 // }
 
 // func openWebPage() {
-// 	router := gin.Default()
+//  engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
+//  router := gin.Default()
 // 	router.LoadHTMLGlob("templates/*.html")
 
 // 	router.GET("/test", func(ctx *gin.Context) {

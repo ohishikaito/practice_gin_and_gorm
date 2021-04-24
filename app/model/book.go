@@ -6,7 +6,8 @@ import (
 
 type Book struct {
 	gorm.Model
-	Price   int    `validate:"required,max=100"`
-	Title   string `validate:"required"`
-	Content string `validate:"required"`
+	Price      int    `validate:"required,max=100"`
+	Title      string `validate:"required"`
+	Content    string `validate:"required"`
+	BookDetail BookDetail
 }
