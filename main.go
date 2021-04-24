@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"go_myapp/app/controller"
 	"log"
 	"net/http"
@@ -14,23 +12,6 @@ func init() {
 	// db.Migrate()
 }
 
-type P struct {
-	Name      string `json:"-"`
-	Age       int
-	Nicknames []string
-}
-
-type reqBody struct {
-	Name string `json:"name"`
-}
-
-func ViewHandler(w http.ResponseWriter, r *http.Request) {
-	var body reqBody
-	fmt.Println(r.Body)
-	fmt.Println(json.NewDecoder(r.Body))
-	fmt.Println(json.NewDecoder(r.Body).Decode(&body))
-}
-
 func NotUsedGin() {
 	app := controller.NewApp()
 	r := controller.HttpRoute(app)
@@ -38,40 +19,25 @@ func NotUsedGin() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func main() {
-	NotUsedGin()
-
-	b := []byte(`{"name":"mikeeeeeee"}`)
-	var p P
-	if err := json.Unmarshal(b, &p); err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(p)
-	fmt.Println(p.Name)
-
-	v, _ := json.Marshal(p)
-	fmt.Println(string(v))
-}
-
 // こいつらもcontroller/route.goに移動しようかなあ
-// func main() {
-// engine := gin.Default()
-// engine.Use(middleware.TestMiddleware())
-// bookEngine := engine.Group("/book")
-// {
-// 	bookEngine.GET("/index", controller.BookIndex)
-// 	bookEngine.POST("/create", controller.BookCreate)
-// 	bookEngine.GET("/:id", controller.BookShow)
-// 	bookEngine.PUT("/:id/update", controller.BookUpdate)
-// 	bookEngine.DELETE("/:id/delete", controller.BookDelete)
-// }
-// engine.Run()
+func main() {
+	// engine := gin.Default()
+	// engine.Use(middleware.TestMiddleware())
+	// bookEngine := engine.Group("/book")
+	// {
+	// 	bookEngine.GET("/index", controller.BookIndex)
+	// 	bookEngine.POST("/create", controller.BookCreate)
+	// 	bookEngine.GET("/:id", controller.BookShow)
+	// 	bookEngine.PUT("/:id/update", controller.BookUpdate)
+	// 	bookEngine.DELETE("/:id/delete", controller.BookDelete)
+	// }
+	// engine.Run()
 
-// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
-// NotUsedGin()
-// QiitaNoYatsu()
-// openWebPage()
-// }
+	// engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
+	NotUsedGin()
+	// QiitaNoYatsu()
+	// openWebPage()
+}
 
 // func openWebPage() {
 // 	router := gin.Default()

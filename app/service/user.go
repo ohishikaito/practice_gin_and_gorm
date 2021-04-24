@@ -7,11 +7,11 @@ import (
 type UserService struct{}
 
 func (UserService) GetUserIndex() ([]model.User, error) {
-	var Users []model.User
-	if err := db.Find(&Users).Error; err != nil {
+	var users []model.User
+	if err := db.Find(&users).Error; err != nil {
 		return nil, err
 	}
-	return Users, nil
+	return users, nil
 }
 
 func (UserService) CreateUser(User *model.User) error {

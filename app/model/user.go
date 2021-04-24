@@ -8,6 +8,6 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	// gorm.Model
-	Email    string
-	Password string
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password"`
 }
