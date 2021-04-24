@@ -34,7 +34,6 @@ func Route() {
 
 		bookDetailEngine := bookEngine.Group("/:id/book_detail")
 		{
-			bookDetailEngine.GET("/", controller.BookDetailIndex)
 			bookDetailEngine.POST("/", controller.BookDetailCreate)
 		}
 
