@@ -8,12 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type App struct{}
-
-func NewApp() *App {
-	return &App{}
-}
-
 func (app *App) successResponse(w http.ResponseWriter, body interface{}, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)

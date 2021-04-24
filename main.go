@@ -37,9 +37,9 @@ func Route() {
 			bookDetailEngine.POST("/", controller.BookDetailCreate)
 		}
 
-		// commentEngine := bookEngine.Group("/:id/comments")
+		commentEngine := bookEngine.Group("/:id/comments")
 		{
-			// commentEngine.GET("/", controller.CommentIndex)
+			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
 	engine.Run(":8080")

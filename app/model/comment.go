@@ -7,8 +7,6 @@ import (
 type Comment struct {
 	gorm.Model
 	UserID uint
-	// User   User
 	BookID uint
-	// Book   *Book
-	Text string `validate:"required"`
+	Text   string `validate:"required"`
 }

@@ -6,10 +6,12 @@ import (
 
 type CommentService struct{}
 
-func (CommentService) GetCommentIndex(bookID int) (*model.Book, error) {
-	book := &model.Book{}
-	if err := db.Where("id = ?", bookID).Preload("Comments").Find(book).Error; err != nil {
-		return nil, err
+func (CommentService) CreateComment(comment *model.Comment) error {
+	if err := validate.Struct(comment); err != nil {
+		return err
 	}
-	return book, nil
+	if err := db.Create(comment).Error; err != nil {
+		return err
+	}
+	return nil
 }
