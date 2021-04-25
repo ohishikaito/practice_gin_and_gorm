@@ -10,12 +10,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-var db *gorm.DB
-var err error
-var validate *validator.Validate
+var (
+	db       *gorm.DB
+	validate *validator.Validate
+)
 
 func init() {
 	// DB接続
+	var err error
 	db, err = gorm.Open(config.SQLDriver, config.DatabaseURL)
 	if err != nil {
 		panic(err.Error())
