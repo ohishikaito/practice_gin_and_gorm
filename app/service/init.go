@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"go_myapp/config"
 	"log"
 	"os"
@@ -12,11 +11,11 @@ import (
 )
 
 var db *gorm.DB
+var err error
 var validate *validator.Validate
 
 func init() {
 	// DB接続
-	err := errors.New("")
 	db, err = gorm.Open(config.SQLDriver, config.DatabaseURL)
 	if err != nil {
 		panic(err.Error())
@@ -26,7 +25,7 @@ func init() {
 	validate = validator.New()
 
 	// SQLログ出力先
-	file, err := os.OpenFile("./db/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile("./db/log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		panic(err.Error())
 	}

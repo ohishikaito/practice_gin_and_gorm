@@ -1,4 +1,4 @@
-db/log
+db/log.txt
 gin-bin
 .DS_Store
 main
