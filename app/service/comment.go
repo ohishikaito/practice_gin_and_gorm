@@ -10,17 +10,13 @@ type CommentService struct {
 }
 
 func (CommentService) CreateComment(comment *model.Comment) error {
-	// validateがstructを見すぎだわ
-	// if err := validate.Struct(comment); err != nil {
-	// 	return err
-	// }
-	// レスポンスにUser含めたくないんだけど
-	// それか、Userの値を正しく取りたい
-	// if err := db.Create(comment).Error; err != nil {
-	if err := db.Preload("User").Create(comment).Error; err != nil {
+	if err := validate.Struct(comment); err != nil {
 		return err
 	}
-	// db.Model(&model.User{}).Association("Comments").Append(comment)
+	// レスポンスにUser含めたくないんだけど、nullにもできないからとりあえず含めるようにした！
+	if err := db.Create(comment).Take(&comment.User).Error; err != nil {
+		return err
+	}
 	return nil
 }
 
