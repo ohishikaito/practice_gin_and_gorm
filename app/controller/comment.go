@@ -22,9 +22,6 @@ func CommentCreate(c *gin.Context) {
 	app.JSONResponse(c, http.StatusCreated, comment)
 }
 
-// コメントしたユーザー一覧
-// コメント一覧を取得して、そこからユーザーを取得した方がいいのではwwwwwww
-// 後でスコープ化する
 func CommentIndex(c *gin.Context) {
 	bookID, _ := strconv.Atoi(c.Param("id"))
 	comments, err := commentService.GetBookComments(bookID)

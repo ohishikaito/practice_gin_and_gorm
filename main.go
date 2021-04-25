@@ -2,6 +2,7 @@ package main
 
 import (
 	"go_myapp/app/controller"
+	"go_myapp/db"
 	"go_myapp/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,7 @@ import (
 )
 
 func init() {
-	// db.Migrate()
+	db.Migrate()
 }
 
 func main() {
@@ -42,6 +43,7 @@ func Route() {
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
+	// engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
 	engine.Run(":8080")
 }
 
