@@ -11,7 +11,9 @@ import (
 )
 
 var (
-	db       *gorm.DB
+	// DB接続用をグローバルに
+	db *gorm.DB
+	// バリデーションを定義
 	validate *validator.Validate
 )
 

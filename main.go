@@ -38,6 +38,7 @@ func Route() {
 
 		commentEngine := bookEngine.Group("/:id/comments")
 		{
+			commentEngine.GET("/", controller.CommentIndex)
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
