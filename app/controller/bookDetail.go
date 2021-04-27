@@ -14,7 +14,7 @@ func BookDetailCreate(c *gin.Context) {
 	bookDetail := model.BookDetail{}
 	c.BindJSON(&bookDetail)
 	if err := bookDetailService.CreateBookDetail(&bookDetail); err != nil {
-		c.String(http.StatusUnprocessableEntity, ""+err.Error())
+		app.ErrorResponse(c, http.StatusNotFound, err)
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
