@@ -43,7 +43,7 @@ func Route() {
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
-	// engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
+	engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
 	engine.Run(":8080")
 }
 

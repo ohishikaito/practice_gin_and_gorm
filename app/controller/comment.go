@@ -32,3 +32,13 @@ func CommentIndex(c *gin.Context) {
 	}
 	app.JSONResponse(c, http.StatusOK, comments)
 }
+
+func UserCommentBooks(c *gin.Context) {
+	userID, _ := strconv.Atoi(c.Param("id"))
+	comments, err := commentService.UserCommentBooks(userID)
+	if err != nil {
+		app.ErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+	app.JSONResponse(c, http.StatusOK, comments)
+}
