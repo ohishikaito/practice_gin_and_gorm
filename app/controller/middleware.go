@@ -16,6 +16,6 @@ func (app *App) JSONResponse(c *gin.Context, statusCode int, data interface{}) {
 
 func (app *App) ErrorResponse(c *gin.Context, statusCode int, err error) {
 	c.AbortWithStatusJSON(statusCode, gin.H{
-		"Message": string(err.Error()),
+		"message": string(err.Error()),
 	})
 }
