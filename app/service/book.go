@@ -26,7 +26,7 @@ func (BookService) CreateBook(book *model.Book) error {
 
 func (BookService) ShowBook(bookID int) (*model.Book, error) {
 	book := &model.Book{}
-	if err := db.Where("id = ?", bookID).Preload("Comments.User").Preload("BookDetail").Take(book).Error; err != nil {
+	if err := db.Where("id = ?", bookID).Preload("Comments.User").Preload("BookDetail").Preload("Languages").Take(book).Error; err != nil {
 		return nil, err
 	}
 	return book, nil

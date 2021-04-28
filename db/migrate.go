@@ -20,6 +20,7 @@ func Migrate() {
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.BookDetail{})
 	db.AutoMigrate(&model.Comment{})
+	db.AutoMigrate(&model.Language{})
 
 	db.Model(&model.Comment{}).AddForeignKey("book_id", "books(id)", "CASCADE", "CASCADE")
 	db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")

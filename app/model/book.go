@@ -11,4 +11,5 @@ type Book struct {
 	Content    string     `validate:"required"`
 	BookDetail BookDetail `validate:"omitempty,nostructlevel"`
 	Comments   []Comment
+	Languages  []Language `gorm:"many2many:book_languages;"`
 }
