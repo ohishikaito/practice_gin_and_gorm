@@ -1,10 +1,12 @@
 package service
 
 import (
+	"go_myapp/auth"
 	"go_myapp/config"
 	"log"
 	"os"
 
+	firebase "firebase.google.com/go"
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -14,11 +16,16 @@ var (
 	// DB接続用をグローバルに
 	db *gorm.DB
 	// バリデーションを定義
-	validate *validator.Validate
+	validate    *validator.Validate
+	firebaseApp *firebase.App
 )
 
 func init() {
-	// DB接続
+	DatabaseInit()
+	FirebaseInit()
+}
+
+func DatabaseInit() {
 	var err error
 	db, err = gorm.Open(config.SQLDriver, config.DatabaseURL)
 	if err != nil {
@@ -36,4 +43,8 @@ func init() {
 	log.SetOutput(file)
 	db.LogMode(true)
 	db.SetLogger(log.New(file, "", 0))
+}
+
+func FirebaseInit() {
+	firebaseApp = auth.NewFirebaseApp()
 }

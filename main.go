@@ -2,17 +2,16 @@ package main
 
 import (
 	"go_myapp/app/controller"
-	"go_myapp/auth"
 	"go_myapp/db"
 	"go_myapp/middleware"
+	"log"
+	"net/http"
 
-	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func init() {
-	Firebase()
 	db.Migrate()
 }
 
@@ -20,7 +19,7 @@ func main() {
 	// AuthTest()
 	Route()
 
-	// NotUsedGin()
+	NotUsedGin()
 	// QiitaNoYatsu()
 	// openWebPage()
 }
@@ -49,26 +48,6 @@ func Route() {
 	}
 	engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
 	engine.Run(":8080")
-}
-
-var app *firebase.App
-
-func Firebase() {
-	app = auth.NewFirebaseApp()
-	// client := auth.NewAuthClient(app)
-	// params := (&model.User{}).
-	// 	Email("user@example.com").
-	// 	EmailVerified(false).
-	// 	PhoneNumber("+15555550100").
-	// 	Password("secretPassword").
-	// 	DisplayName("John Doe").
-	// 	PhotoURL("http://www.example.com/12345678/photo.png").
-	// 	Disabled(false)
-	// u, err := client.CreateUser(ctx, params)
-	// if err != nil {
-	// 	log.Fatalf("error creating user: %v\n", err)
-	// }
-	// log.Printf("Successfully created user: %v\n", u)
 }
 
 // type post struct {
@@ -105,16 +84,16 @@ func Firebase() {
 // 	}
 // }
 
-// func NotUsedGin() {
-// 	app := controller.NewApp()
-// 	r := controller.HttpRoute(app)
-// 	http.Handle("/", r)
-// 	log.Fatal(http.ListenAndServe(":8080", nil))
-// }
+func NotUsedGin() {
+	app := controller.NewApp()
+	r := controller.HttpRoute(app)
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
 
 // func openWebPage() {
-//  engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
-//  router := gin.Default()
+// 	engine.Static("/static", "./static") // http://localhost:8080/static/s.png で画像が見れる
+// 	router := gin.Default()
 // 	router.LoadHTMLGlob("templates/*.html")
 
 // 	router.GET("/test", func(ctx *gin.Context) {
