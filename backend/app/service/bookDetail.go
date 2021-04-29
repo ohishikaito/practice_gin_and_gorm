@@ -1,7 +1,7 @@
 package service
 
 import (
-	"go_myapp/app/model"
+	"app/app/model"
 )
 
 type BookDetailService struct{}

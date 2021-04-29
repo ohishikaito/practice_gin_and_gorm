@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go_myapp/app/controller"
-	"go_myapp/db"
-	"go_myapp/middleware"
+	"app/app/controller"
+	"app/db"
+	"app/middleware"
 	"log"
 	"net/http"
 

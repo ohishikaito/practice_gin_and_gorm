@@ -1,9 +1,9 @@
 package db
 
 import (
+	"app/app/model"
+	"app/config"
 	"fmt"
-	"go_myapp/app/model"
-	"go_myapp/config"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"

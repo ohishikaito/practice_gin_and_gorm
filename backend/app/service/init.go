@@ -1,8 +1,8 @@
 package service
 
 import (
-	"go_myapp/auth"
-	"go_myapp/config"
+	"app/auth"
+	"app/config"
 	"log"
 	"os"
 

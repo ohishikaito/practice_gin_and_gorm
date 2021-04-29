@@ -1,8 +1,8 @@
 package service
 
 import (
+	"app/app/model"
 	"fmt"
-	"go_myapp/app/model"
 
 	"github.com/jinzhu/gorm"
 )

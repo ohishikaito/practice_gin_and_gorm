@@ -1,4 +1,4 @@
-module go_myapp
+module app
 
 // 使わないのを消すコマンド
 // go mod tidy -v

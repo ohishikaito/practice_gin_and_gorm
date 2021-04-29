@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"app/app/model"
+	"app/app/service"
 	"encoding/json"
-	"go_myapp/app/model"
-	"go_myapp/app/service"
 	"net/http"
 )
 

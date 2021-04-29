@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"app/app/model"
+	"app/app/service"
 	"errors"
-	"go_myapp/app/model"
-	"go_myapp/app/service"
 	"net/http"
 	"strconv"
 
