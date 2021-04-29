@@ -24,10 +24,10 @@ ENV CGO_ENABLED=0 \
   GOARCH=amd64 \
   GO111MODULE=on
 EXPOSE 8080
+# ここのスペースほしいw
 CMD ["realize", "start", "--build","--run"]
 
 # webアプリに必要なライブラリのインストール
 RUN go get github.com/gin-gonic/gin && \
   go get github.com/go-sql-driver/mysql && \
-  # go get -u github.com/d4l3k/go-pry && \
   go get github.com/jinzhu/gorm

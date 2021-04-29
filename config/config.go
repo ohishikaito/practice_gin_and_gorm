@@ -1,20 +1,21 @@
 package config
 
+import (
+	"os"
+)
+
 var (
 	SQLDriver   string
 	DatabaseURL string
 )
 
 func init() {
-	driver := "mysql"
-	username := "root"
-	password := "root"
-	// dockerのネットワークを経由してアクセスするから、コンテナ名にしろ
-	protocol := "tcp(go_myapp_db_1)"
-	dbName := "go_database"
-
+	username := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	// dockerのネットワークを経由してアクセスするから、protocolはコンテナ名にしろ
+	protocol := os.Getenv("DB_PROTOCOL")
+	dbName := os.Getenv("DB_NAME")
 	database := username + ":" + password + "@" + protocol + "/" + dbName + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
-
-	SQLDriver = driver
 	DatabaseURL = database
+	SQLDriver = os.Getenv("DB_DRIVER")
 }

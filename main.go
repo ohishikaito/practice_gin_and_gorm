@@ -2,18 +2,22 @@ package main
 
 import (
 	"go_myapp/app/controller"
+	"go_myapp/auth"
 	"go_myapp/db"
 	"go_myapp/middleware"
 
+	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func init() {
+	Firebase()
 	db.Migrate()
 }
 
 func main() {
+	// AuthTest()
 	Route()
 
 	// NotUsedGin()
@@ -39,13 +43,67 @@ func Route() {
 
 		commentEngine := bookEngine.Group("/:id/comments")
 		{
-			commentEngine.GET("/", controller.CommentIndex)
+			// commentEngine.GET("/", controller.CommentIndex)
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
 	engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
 	engine.Run(":8080")
 }
+
+var app *firebase.App
+
+func Firebase() {
+	app = auth.NewFirebaseApp()
+	// client := auth.NewAuthClient(app)
+	// params := (&model.User{}).
+	// 	Email("user@example.com").
+	// 	EmailVerified(false).
+	// 	PhoneNumber("+15555550100").
+	// 	Password("secretPassword").
+	// 	DisplayName("John Doe").
+	// 	PhotoURL("http://www.example.com/12345678/photo.png").
+	// 	Disabled(false)
+	// u, err := client.CreateUser(ctx, params)
+	// if err != nil {
+	// 	log.Fatalf("error creating user: %v\n", err)
+	// }
+	// log.Printf("Successfully created user: %v\n", u)
+}
+
+// type post struct {
+// 	Title string `json:"title"`
+// 	Tag   string `json:"tag"`
+// 	URL   string `json:"url"`
+// }
+
+// var public = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 	post := &post{
+// 		Title: "title",
+// 		Tag:   "tag",
+// 		URL:   "url",
+// 	}
+// 	json.NewEncoder(w).Encode(post)
+// })
+// var private = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 	post := &post{
+// 		Title: "VGolangとGoogle Cloud Vision APIで画像から文字認識するCLIを速攻でつくる",
+// 		Tag:   "Go",
+// 		URL:   "https://qiita.com/po3rin/items/bf439424e38757c1e69b",
+// 	}
+// 	json.NewEncoder(w).Encode(post)
+// })
+
+// func AuthTest() {
+
+// 	r := mux.NewRouter()
+// 	r.Handle("/private", auth.JwtMiddleware.Handler(private))
+// 	r.Handle("/auth", auth.GetTokenHandler)
+// 	r.Handle("/public", public)
+// 	if err := http.ListenAndServe(":8080", r); err != nil {
+// 		log.Fatal("ListenAndServe:", err)
+// 	}
+// }
 
 // func NotUsedGin() {
 // 	app := controller.NewApp()
