@@ -3,10 +3,11 @@ package main
 import (
 	"app/app/controller"
 	"app/db"
-	"app/middleware"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -26,7 +27,18 @@ func main() {
 
 func Route() {
 	engine := gin.Default()
-	engine.Use(middleware.TestMiddleware())
+	CORSHandler := cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		AllowCredentials: false,
+		MaxAge:           12 * time.Hour,
+	})
+	// config.AllowOrigins = []string{"http://localhost:3000"}
+	// config.AllowOrigins = []string{"http://127.0.0.1:3000"}
+	// engine.Use(middleware.Cors())
+	engine.Use(CORSHandler)
+	// engine.Use(middleware.TestMiddleware())
 	bookEngine := engine.Group("/books")
 	{
 		bookEngine.GET("/", controller.BookIndex)
@@ -42,11 +54,43 @@ func Route() {
 
 		commentEngine := bookEngine.Group("/:id/comments")
 		{
-			// commentEngine.GET("/", controller.CommentIndex)
+			commentEngine.GET("/", controller.CommentIndex)
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
 	engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
+	// engine.Use(cors.New(cors.Config{
+	// 	// 許可したいHTTPメソッドの一覧
+	// 	AllowMethods: []string{
+	// 		"POST",
+	// 		"GET",
+	// 		"OPTIONS",
+	// 		"PUT",
+	// 		"DELETE",
+	// 	},
+	// 	// 許可したいHTTPリクエストヘッダの一覧
+	// 	AllowHeaders: []string{
+	// 		"Access-Control-Allow-Headers",
+	// 		"Content-Type",
+	// 		"Content-Length",
+	// 		"Accept-Encoding",
+	// 		"X-CSRF-Token",
+	// 		"Authorization",
+	// 	},
+	// 	// 許可したいアクセス元の一覧
+	// 	AllowOrigins: []string{
+	// 		"http://localhost:3000",
+	// 		"http://localhost:3000/",
+	// 		"*",
+	// 	},
+	// 	// 自分で許可するしないの処理を書きたい場合は、以下のように書くこともできる
+	// 	// AllowOriginFunc: func(origin string) bool {
+	// 	//  return origin == "https://www.example.com:8080"
+	// 	// },
+	// 	// preflight requestで許可した後の接続可能時間
+	// 	// https://godoc.org/github.com/gin-contrib/cors#Config の中のコメントに詳細あり
+	// 	MaxAge: 24 * time.Hour,
+	// }))
 	engine.Run(":8080")
 }
 
