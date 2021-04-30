@@ -29,6 +29,7 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/firebase',
+    '~/plugins/nuxt-client-init',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

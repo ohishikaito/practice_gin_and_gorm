@@ -5,6 +5,8 @@ import (
 	"app/app/service"
 	"encoding/json"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 var userService service.UserService
@@ -34,4 +36,14 @@ func (app *App) userCreateHandler(w http.ResponseWriter, r *http.Request) {
 		Data: user,
 	}
 	app.successResponse(w, body, http.StatusCreated)
+}
+
+func UserCreate(c *gin.Context) {
+	user := model.User{}
+	c.BindJSON(&user)
+	if err := userService.CreateUser(&user); err != nil {
+		app.ErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusCreated, user)
 }

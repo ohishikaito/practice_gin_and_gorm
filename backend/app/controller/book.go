@@ -18,7 +18,9 @@ func BookIndex(c *gin.Context) {
 		app.ErrorResponse(c, http.StatusNotFound, err)
 		return
 	}
-	app.JSONResponse(c, http.StatusOK, books)
+	// レスポンスやっぱりc.JSON使って！フロントで受け取る時に変
+	c.JSON(http.StatusOK, books)
+	// app.JSONResponse(c, http.StatusOK, books)
 }
 
 func BookCreate(c *gin.Context) {

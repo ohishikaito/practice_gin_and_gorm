@@ -46,6 +46,9 @@ func Route() {
 			commentEngine.POST("/", controller.CommentCreate)
 		}
 	}
+	// ginでuser/createしないといけないから
+	// r.HandleFunc("/users/create", app.userCreateHandler).Methods("POST")
+	engine.POST("/users/create", controller.UserCreate)
 	engine.GET("/users/:id/comment_books", controller.UserCommentBooks)
 	engine.Run(":8080")
 }

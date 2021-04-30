@@ -34,6 +34,6 @@ func (app *App) errorResponse(w http.ResponseWriter, Response string, statusCode
 func HttpRoute(app *App) *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/users", app.UserIndexHandler).Methods("GET")
-	r.HandleFunc("/users", app.userCreateHandler).Methods("POST")
+	r.HandleFunc("/users/create", app.userCreateHandler).Methods("POST")
 	return r
 }
