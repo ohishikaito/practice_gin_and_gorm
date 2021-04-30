@@ -70,18 +70,7 @@ export default {
   build: {
   },
 
-  // フロントのproxy設定する
   axios: {
-    // prefix: '/api',
-    // baseURL: `http://127.0.0.1:8080`
-    baseURL: `http://localhost:8080/`
-  },
-  proxy: {
-    '/': {
-      target: 'http://localhost:8080/books',
-      pathRewrite: {
-        '/api': '/'
-      }
-    }
+    baseURL: `http://localhost:8080`
   },
 }

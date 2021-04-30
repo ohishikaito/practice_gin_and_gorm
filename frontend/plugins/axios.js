@@ -1,10 +1,10 @@
 export default (ctx) => {
   ctx.$axios.onRequest((config) => {
-    console.log(config)
-    return config
+    // console.error(config)
+    // return config
   })
   ctx.$axios.onResponse((response) => {
-    console.log(config)
+    // console.error(config)
     // if (response.headers['access-token']) {
     //   ctx.store.dispatch('auth', { headers: response.headers })
     // }
@@ -12,7 +12,7 @@ export default (ctx) => {
     //   return response
     // }
     // response.data = camelcaseKeys(response.data, { deep: true })
-    return response
+    // return response
   })
   // ctx.$axios.onError(error => {
   //   if (error.response.status === 401) {

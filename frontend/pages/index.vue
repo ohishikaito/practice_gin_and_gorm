@@ -2,8 +2,8 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
       <div v-for="book in books" :key="book.id">
-        <p>{{ book.id }}</p>
-        <p>{{ book.name }}</p>
+        <p>{{ book.ID }}</p>
+        <p>{{ book.Title }}</p>
       </div>
       <!-- <v-text-field v-model="email"></v-text-field>
       <v-text-field v-model="password"></v-text-field> -->
@@ -20,19 +20,25 @@ import firebase from '~/plugins/firebase'
 export default {
   async asyncData(ctx) {
     try {
-      // const url = "https://present-api.aircatalog-dev.jp/api/v1/facilities"
-      // const url = "http://localhost:8080/books"
-      const response = await ctx.$axios.get("/books")
-      // const response = await ctx.$axios.get("/books")
+      const response = await ctx.$axios.get("books/index")
       console.log(response, 'response')
-      // const books = response
+      // ctx.$axios.get("books/index"),
+      // await Promise.all([
+      //   ctx.$axios.get("books/index"),
+      //   ctx.$axios.get("books"),
+      //   ctx.$axios.get("/books"),
+      //   ctx.$axios.get("books/"),
+      //   ctx.$axios.get("/books/"),
+      // ])
+      const books = response.data.data
+      console.log(books)
       return {
-        // books,
-        // email: '',
-        // password: '',
+        books,
+        email: '',
+        password: '',
       }
     } catch(err) {
-      console.log(err)
+      console.error(err)
     }
   },
   components: {
