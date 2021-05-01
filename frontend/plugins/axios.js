@@ -1,6 +1,8 @@
 export default (ctx) => {
   ctx.$axios.onRequest((config) => {
-    // console.error(config)
+    // const idToken = ctx.store.getters['getIdToken']
+    // config.headers = idToken
+    // console.log(config)
     // return config
   })
   ctx.$axios.onResponse((response) => {

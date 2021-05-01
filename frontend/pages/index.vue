@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     authenticated() {
-      return this.$store.getters['getUid']
+      return this.$store.getters['getIdToken']
     }
   },
   methods: {
@@ -54,6 +54,8 @@ export default {
       try {
       const response = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       const user = response.user
+      const idToken = await user.getIdToken(/* forceRefresh */ true)
+      this.$store.dispatch('setIdToken', { idToken })
       const req = {
         Email: user.email,
         LastName: "大石",
@@ -61,14 +63,13 @@ export default {
       }
       await this.$axios.post("users/create", req)
       // ログイン状態を保持するため
-      this.$store.dispatch('setUid', { uid: user.uid })
       } catch(err) {
         console.error(err)
         console.error(err.response)
       }
     },
-    async signOut() {
-      this.$store.dispatch('unsetUid')
+    signOut() {
+      this.$store.dispatch('unsetIdToken')
     },
   }
 }

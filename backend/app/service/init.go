@@ -1,7 +1,6 @@
 package service
 
 import (
-	"app/auth"
 	"app/config"
 	"log"
 	"os"
@@ -22,7 +21,6 @@ var (
 
 func init() {
 	DatabaseInit()
-	FirebaseInit()
 }
 
 func DatabaseInit() {
@@ -43,8 +41,4 @@ func DatabaseInit() {
 	log.SetOutput(file)
 	db.LogMode(true)
 	db.SetLogger(log.New(file, "", 0))
-}
-
-func FirebaseInit() {
-	firebaseApp = auth.NewFirebaseApp()
 }

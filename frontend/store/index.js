@@ -1,33 +1,34 @@
 export const state = () => ({
-  uid: null,
+  idToken: null,
 })
 
 export const getters = {
-  getUid: (state) => state.uid,
+  getIdToken: (state) => state.idToken,
 }
 
 export const mutations = {
-  setUid(state, uid) {
-    state.uid = uid;
-    localStorage.setItem('uid', uid)
+  setIdToken(state, idToken) {
+    state.idToken = idToken;
+    localStorage.setItem('idToken', idToken)
   },
-  unsetUid(state) {
-    state.uid = null;
-    localStorage.removeItem('uid')
+  unsetIdToken(state) {
+    state.idToken = null;
+    localStorage.removeItem('idToken')
   },
 };
 
 export const actions = {
   nuxtClientInit ({ commit }) {
-    const uid = localStorage.getItem('uid');
-    if (uid) {
-      commit('setUid', uid);
+    const idToken = localStorage.getItem('idToken');
+    if (idToken) {
+      commit('setIdToken', idToken);
     }
   },
-  setUid({ commit }, payload) {
-    commit('setUid', payload.uid)
+  setIdToken({ commit }, payload) {
+    // const idToken = JSON.parse()
+    commit('setIdToken', payload.idToken)
   },
-  unsetUid({ commit }) {
-    commit('unsetUid')
+  unsetIdToken({ commit }) {
+    commit('unsetIdToken')
   },
 }

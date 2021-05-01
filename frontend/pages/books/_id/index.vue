@@ -18,7 +18,10 @@ import VuetifyLogo from '~/components/VuetifyLogo.vue'
 export default {
   async asyncData(ctx) {
     try {
-      const response = await ctx.$axios.get(`books/${ctx.route.params.id}`)
+      const response = await ctx.$axios.get(`/books/${ctx.route.params.id}`, {
+        headers: {'Authorization': `Bearer ${ctx.store.getters['getIdToken']}`}
+      })
+      console.log(response)
       const book = response.data.data
       return {
         book,

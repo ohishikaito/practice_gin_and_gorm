@@ -3,9 +3,13 @@ package controller
 import (
 	"app/app/model"
 	"app/app/service"
+	"app/auth"
+	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +40,18 @@ func BookCreate(c *gin.Context) {
 }
 
 func BookShow(c *gin.Context) {
+	client := auth.NewAuthClient(firebaseApp)
+	// 実験で認証する
+	authHeader := c.Request.Header.Get("Authorization")
+	idToken := strings.Replace(authHeader, "Bearer ", "", 1)
+	token, err := client.VerifyIDToken(context.Background(), idToken)
+	if err != nil {
+		app.ErrorResponse(c, http.StatusUnauthorized, err)
+		// fmt.Errorf("error verifying ID token: %v\n", err)
+		return
+	}
+	fmt.Printf("Verified ID token: %v\n", token)
+
 	bookID, _ := strconv.Atoi(c.Param("id"))
 	book, err := bookService.ShowBook(bookID)
 	if err != nil {
