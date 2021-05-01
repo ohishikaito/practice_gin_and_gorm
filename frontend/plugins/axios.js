@@ -1,9 +1,10 @@
 export default (ctx) => {
   ctx.$axios.onRequest((config) => {
     // const idToken = ctx.store.getters['getIdToken']
-    // config.headers = idToken
-    // console.log(config)
-    // return config
+    config.headers = {
+      'Authorization': `Bearer ${ctx.store.getters['getIdToken']}`
+    }
+    return config
   })
   ctx.$axios.onResponse((response) => {
     // console.error(config)
@@ -22,4 +23,10 @@ export default (ctx) => {
   //     ctx.redirect('/auth/sign-in');
   //   }
   // })
+  ctx.$axios.onError(error => {
+    if (error.response.status === 401) {
+      ctx.store.dispatch('unsetIdToken')
+      ctx.redirect('/sign_in')
+    }
+  });
 }
